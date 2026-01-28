@@ -3,6 +3,7 @@ import 'database/database_helper.dart';
 import 'models/fragrance.dart';
 import 'dart:io';
 import 'add_fragrance_screen.dart';
+import 'fragrance_detail_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -127,68 +128,80 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildFragranceCard(Fragrance fragrance) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(12),
+    return GestureDetector(
+      onTap: () async {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FragranceDetailScreen(fragrance: fragrance),
+          ),
+        );
+        _loadFragrances();
+      },
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                ),
+                child: fragrance.imagePath != null
+                    ? Image.file(
+                        File(fragrance.imagePath!),
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return _buildPlaceholderImage();
+                        },
+                      )
+                    : _buildPlaceholderImage(),
               ),
-              child: fragrance.imagePath != null
-                  ? Image.file(
-                      File(fragrance.imagePath!),
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return _buildPlaceholderImage();
-                      },
-                    )
-                  : _buildPlaceholderImage(),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  fragrance.name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  fragrance.brand,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 12,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                if (fragrance.size != null)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
-                    '${fragrance.size} ml',
-                    style: TextStyle(
-                      color: Colors.grey[500],
-                      fontSize: 11,
+                    fragrance.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-              ],
+                  Text(
+                    fragrance.brand,
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 12,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (fragrance.size != null)
+                    Text(
+                      '${fragrance.size} ml',
+                      style: TextStyle(
+                        color: Colors.grey[500],
+                        fontSize: 11,
+                      ),
+                    ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
+
 
   Widget _buildPlaceholderImage() {
     return Container(
