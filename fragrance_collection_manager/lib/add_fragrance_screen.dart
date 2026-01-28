@@ -206,18 +206,6 @@ class _AddFragranceScreenState extends State<AddFragranceScreen> {
               ),
               maxLines: 3,
             ),
-            const SizedBox(height: 24),
-
-            ElevatedButton(
-              onPressed: _isLoading ? null : _saveFragrance,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(16),
-              ),
-              child: const Text(
-                'Save Fragrance',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
           ],
         ),
       ),
