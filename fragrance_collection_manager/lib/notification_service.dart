@@ -82,4 +82,31 @@ class NotificationService {
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }
+
+  Future<void> showRandomFragranceNotification() async {
+    final fragrances = await DatabaseHelper.instance.readAllFragrances();
+    String notificationBody = 'Open the app to see your collection!';
+    
+    if (fragrances.isNotEmpty) {
+      final random = Random();
+      final randomFragrance = fragrances[random.nextInt(fragrances.length)];
+      notificationBody = 'Random fragrance: ${randomFragrance.name} by ${randomFragrance.brand}';
+    }
+
+    await flutterLocalNotificationsPlugin.show(
+      1, // Different ID from the scheduled one
+      'Fragrance Suggestion',
+      notificationBody,
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'fragrance_reminders',
+          'Fragrance Reminders',
+          channelDescription: 'Daily reminders to wear your fragrances',
+          importance: Importance.high,
+          priority: Priority.high,
+          icon: '@mipmap/ic_launcher',
+        ),
+      ),
+    );
+  }
 }

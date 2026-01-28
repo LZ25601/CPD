@@ -55,6 +55,20 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadFragrances();
   }
 
+  Future<void> _sendRandomFragranceNotification() async {
+    if (fragrances.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Add some fragrances first!'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    await NotificationService.instance.showRandomFragranceNotification();
+  }
+
   Future<void> _loadFragrances() async {
     setState(() => isLoading = true);
     final data = await DatabaseHelper.instance.readAllFragrances();
@@ -70,6 +84,13 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('My Fragrance Collection'),
         elevation: 2,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.casino),
+            onPressed: _sendRandomFragranceNotification,
+            tooltip: 'Get random suggestion',
+          ),
+        ],
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
