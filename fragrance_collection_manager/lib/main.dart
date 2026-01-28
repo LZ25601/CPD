@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Fragrance Collection',
+      title: 'My Scents',
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
         useMaterial3: true,

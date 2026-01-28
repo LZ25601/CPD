@@ -90,7 +90,7 @@ class NotificationService {
     if (fragrances.isNotEmpty) {
       final random = Random();
       final randomFragrance = fragrances[random.nextInt(fragrances.length)];
-      notificationBody = 'Random fragrance: ${randomFragrance.name} by ${randomFragrance.brand}';
+      notificationBody = '${randomFragrance.name} by ${randomFragrance.brand}';
     }
 
     await flutterLocalNotificationsPlugin.show(
