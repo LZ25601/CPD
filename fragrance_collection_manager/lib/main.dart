@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'database/database_helper.dart';
 import 'models/fragrance.dart';
 import 'dart:io';
+import 'add_fragrance_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -62,11 +63,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ? _buildEmptyState()
               : _buildFragranceGrid(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: Navigate to add screen
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Add screen coming soon')),
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddFragranceScreen(),
+            ),
           );
+          _loadFragrances();
         },
         child: const Icon(Icons.add),
       ),
