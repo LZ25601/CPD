@@ -4,9 +4,22 @@ import 'models/fragrance.dart';
 import 'dart:io';
 import 'add_fragrance_screen.dart';
 import 'fragrance_detail_screen.dart';
+import 'notification_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await _requestPermissions();
+
+  await NotificationService.instance.initialize();
+  await NotificationService.instance.scheduleDailyNotification();
   runApp(const MyApp());
+}
+
+Future<void> _requestPermissions() async {
+  await Permission.camera.request();
+  await Permission.notification.request();
 }
 
 class MyApp extends StatelessWidget {
